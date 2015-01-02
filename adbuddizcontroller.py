@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
-# AdBuddizController library for managing
-# AdBuddiz Android advertisements inside Kivy apps
-# by rafalo1333
+''' AdBuddizController library for managing
+AdBuddiz Android advertisements inside Kivy apps
+by rafalo1333. '''
 
-# Pyjnius autoclass and JavaException modules import
+''' Pyjnius autoclass module import '''
 
 try:
     from jnius import autoclass
 except:
     print 'Error in importing proper modules'
 
-# Accessing Kivy's PythonActivity and AdBuddiz classes
+''' Accessing Kivy's PythonActivity and AdBuddiz classes '''
 
 try:
     PythonActivity = autoclass('org.renpy.android.PythonActivity')
@@ -20,19 +20,19 @@ try:
 except:
     print 'AdBuddizController ERROR. Error in accessing proper Java classes.'
     
-# Main AdBuddizController class defining SDK control methods
+''' Main AdBuddizController class defining SDK control methods '''
 
 class AdBuddizController(object):
     
     def __init__(self, publisher_key, **kwargs):
-        # AdBuddizController instance initialisation
-        # You need to pass your PUBLISHER_KEY as argument
+        '''AdBuddizController instance initialisation
+        You need to pass your PUBLISHER_KEY as argument'''
         super(AdBuddizController, self).__init__(**kwargs)
         self.initialise(publisher_key)
         
     def initialise(self, publisher_key):
-        # AdBuddiz initialisation with the given PUBLISHER_KEY
-        # and caching ads for display
+        '''AdBuddiz initialisation with the given PUBLISHER_KEY
+        and caching ads for display'''
         try:
             AdBuddiz.setPublisherKey(publisher_key)
             AdBuddiz.cacheAds(PythonActivity.mActivity)
@@ -40,7 +40,7 @@ class AdBuddizController(object):
             print 'AdBuddizController ERROR. Error in initialising AdBuddiz SDK.'
             
     def is_ready(self):
-        # Method that checks if AdBuddiz SDK is ready to show advertisements
+        ''' Method that checks if AdBuddiz SDK is ready to show advertisements.'''
         try:
             if AdBuddiz.isReadyToShowAd(PythonActivity.mActivity):
                 return True
@@ -51,7 +51,7 @@ class AdBuddizController(object):
             return False
     
     def show_ad(self):
-        # Method that shows the advertisement
+        '''Method that shows the advertisement'''
         try:
             if self.is_ready():
                 AdBuddiz.showAd(PythonActivity.mActivity)
@@ -59,17 +59,20 @@ class AdBuddizController(object):
         except:
             print 'AdBuddizController ERROR. Error in showing AdBuddiz advertisement'
             
-    def set_testmode(self):
-        # Method for setting the TEST mode for AdBuddiz SDK
-        # Use it only for testing, remove from your App before publishing!
+    def set_test_mode(self):
+        '''Method for setting the TEST mode for AdBuddiz SDK
+        Use it only for testing, remove from your App before publishing!'''
         try:
             AdBuddiz.setTestModeActive()
         except:
             print 'AdBuddizController ERROR. Error in setting TEST_MODE on.'
             
-    def set_loglevel(self, level):
-        # Method for setting logging level for AdBuddiz SDK
-        # You can pass one of the following options: info, error or silent (no logs in console)
+    def set_log_level(self, level):
+        '''Method for setting logging level for AdBuddiz SDK.
+        You can pass one of the following options: info, error or silent (no logs in console).
+        INFO means that all SDK runtime information will be print to the console.
+        ERROR means that only errors in SDK will be print to the console.
+        SILENT means that SDK will not print any data to the console.'''
         try:
             if level.lower() == 'info':
                 AdBuddiz.setLogLevel(AdBuddizLogLevel.Info)
